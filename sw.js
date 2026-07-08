@@ -1,8 +1,8 @@
-const CACHE_NAME = "savings-ledger-web-v2";
+const CACHE_NAME = "savings-ledger-web-v3";
 const ASSETS = [
   "./",
   "./index.html",
-  "./styles.css?v=2",
+  "./theme.css?v=1",
   "./app.js",
   "./manifest.json",
   "./assets/icon.svg"
