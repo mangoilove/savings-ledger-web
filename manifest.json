@@ -1,0 +1,17 @@
+{
+  "name": "攒钱账本",
+  "short_name": "攒钱账本",
+  "description": "个人攒钱、记账和理财收益追踪网页 App。",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f7f4ed",
+  "theme_color": "#f7f4ed",
+  "icons": [
+    {
+      "src": "./assets/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
