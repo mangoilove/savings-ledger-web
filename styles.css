@@ -1,15 +1,20 @@
 :root {
   color-scheme: light;
-  --bg: #f7f4ed;
+  --bg: #f5f7f8;
   --panel: #ffffff;
-  --ink: #17211d;
-  --muted: #6c746f;
-  --line: #e4dfd5;
-  --green: #1e8a5a;
-  --red: #c84a3b;
-  --gold: #c58b28;
-  --blue: #315f91;
-  --shadow: 0 10px 28px rgba(23, 33, 29, 0.08);
+  --panel-soft: #f9fbfb;
+  --ink: #151b19;
+  --ink-soft: #27312e;
+  --muted: #69736f;
+  --faint: #8d9692;
+  --line: #dde4e2;
+  --line-strong: #c9d3d0;
+  --green: #0b7a66;
+  --green-soft: #e4f3ef;
+  --blue: #4169a8;
+  --amber: #b8752b;
+  --red: #c94f45;
+  --shadow: 0 18px 42px rgba(21, 27, 25, 0.08);
 }
 
 * {
@@ -37,7 +42,7 @@ button {
 .app-shell {
   width: min(100%, 520px);
   margin: 0 auto;
-  padding: max(18px, env(safe-area-inset-top)) 16px 94px;
+  padding: max(22px, env(safe-area-inset-top)) 16px 96px;
 }
 
 .view {
@@ -53,7 +58,7 @@ button {
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 16px;
+  margin-bottom: 18px;
 }
 
 .eyebrow,
@@ -67,8 +72,10 @@ button {
 }
 
 .eyebrow {
-  margin: 0 0 4px;
-  font-size: 13px;
+  margin: 0 0 5px;
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: 0;
 }
 
 h1,
@@ -78,12 +85,16 @@ p {
 }
 
 h1 {
-  font-size: 30px;
+  color: var(--ink);
+  font-size: 29px;
+  font-weight: 760;
   letter-spacing: 0;
 }
 
 h2 {
-  font-size: 18px;
+  color: var(--ink-soft);
+  font-size: 17px;
+  font-weight: 720;
   letter-spacing: 0;
 }
 
@@ -97,28 +108,43 @@ h2 {
   border-radius: 8px;
   background: var(--panel);
   color: var(--ink);
-  box-shadow: var(--shadow);
+  box-shadow: 0 8px 22px rgba(21, 27, 25, 0.07);
 }
 
 .primary-fab {
   background: var(--ink);
   color: white;
   border-color: var(--ink);
-  font-size: 24px;
+  font-size: 23px;
 }
 
 .goal-panel,
 .metric,
 .section-block,
 .investment-total {
-  background: var(--panel);
   border: 1px solid var(--line);
   border-radius: 8px;
+  background: var(--panel);
   box-shadow: var(--shadow);
 }
 
 .goal-panel {
-  padding: 18px;
+  position: relative;
+  overflow: hidden;
+  padding: 20px;
+  border-color: rgba(255, 255, 255, 0.08);
+  background: linear-gradient(145deg, #121917 0%, #1d2824 60%, #0d342e 100%);
+  color: white;
+}
+
+.goal-panel .muted,
+.goal-panel .hint,
+.goal-panel .goal-grid span {
+  color: rgba(255, 255, 255, 0.68);
+}
+
+.goal-panel h2 {
+  color: white;
 }
 
 .goal-head {
@@ -129,23 +155,24 @@ h2 {
 }
 
 .goal-head strong {
-  color: var(--green);
-  font-size: 26px;
+  color: #9ee0c9;
+  font-size: 27px;
+  font-weight: 780;
 }
 
 .progress-track {
   height: 12px;
-  margin: 18px 0;
+  margin: 20px 0 18px;
   overflow: hidden;
   border-radius: 999px;
-  background: #e7eadf;
+  background: rgba(255, 255, 255, 0.14);
 }
 
 .progress-fill {
   width: 0;
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, var(--green), var(--gold));
+  background: linear-gradient(90deg, #62d3b4, #d8ad63);
   transition: width 220ms ease;
 }
 
@@ -161,12 +188,16 @@ h2 {
 
 .goal-grid div {
   min-width: 0;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
 }
 
 .goal-grid strong,
 .metric strong {
   display: block;
-  margin-top: 4px;
+  margin-top: 5px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -175,7 +206,7 @@ h2 {
 .hint {
   margin-top: 14px;
   font-size: 14px;
-  line-height: 1.45;
+  line-height: 1.5;
 }
 
 .metric-grid {
@@ -184,11 +215,27 @@ h2 {
 }
 
 .metric {
-  padding: 14px;
+  padding: 15px;
+}
+
+.metric span {
+  font-size: 13px;
+  font-weight: 610;
 }
 
 .metric strong {
+  color: var(--ink);
   font-size: 20px;
+  font-weight: 760;
+}
+
+.metric:nth-child(1) strong,
+.metric:nth-child(4) strong {
+  color: var(--green);
+}
+
+.metric:nth-child(2) strong {
+  color: var(--red);
 }
 
 .section-block,
@@ -209,6 +256,7 @@ h2 {
   border: 0;
   background: transparent;
   color: var(--blue);
+  font-weight: 680;
 }
 
 .category-row,
@@ -230,14 +278,14 @@ h2 {
   height: 7px;
   overflow: hidden;
   border-radius: 999px;
-  background: #ece8df;
+  background: #edf1f0;
 }
 
 .bar span {
   display: block;
   height: 100%;
   border-radius: inherit;
-  background: var(--gold);
+  background: linear-gradient(90deg, var(--green), var(--amber));
 }
 
 .category-main,
@@ -248,7 +296,7 @@ h2 {
 
 .category-main p,
 .record-main p {
-  margin-top: 4px;
+  margin-top: 5px;
   color: var(--muted);
   font-size: 13px;
 }
@@ -263,7 +311,11 @@ h2 {
   border: 1px solid var(--line);
   border-radius: 8px;
   background: var(--panel);
-  box-shadow: var(--shadow);
+  box-shadow: 0 10px 28px rgba(21, 27, 25, 0.06);
+}
+
+.record-row strong {
+  font-weight: 720;
 }
 
 .amount.expense {
@@ -275,10 +327,16 @@ h2 {
   color: var(--green);
 }
 
+.investment-total {
+  background: linear-gradient(180deg, #ffffff 0%, #f7faf9 100%);
+}
+
 .investment-total strong {
   display: block;
-  margin: 6px 0;
+  margin: 7px 0;
+  color: var(--ink);
   font-size: 34px;
+  font-weight: 780;
 }
 
 .tabbar {
@@ -290,10 +348,10 @@ h2 {
   grid-template-columns: repeat(4, 1fr);
   width: min(100%, 520px);
   padding: 8px 10px max(8px, env(safe-area-inset-bottom));
-  background: rgba(255, 255, 255, 0.92);
-  border-top: 1px solid var(--line);
+  border-top: 1px solid rgba(221, 228, 226, 0.84);
+  background: rgba(250, 252, 252, 0.92);
   transform: translateX(-50%);
-  backdrop-filter: blur(16px);
+  backdrop-filter: blur(18px);
 }
 
 .tabbar button {
@@ -302,12 +360,12 @@ h2 {
   border-radius: 8px;
   background: transparent;
   color: var(--muted);
+  font-weight: 650;
 }
 
 .tabbar button.active {
-  background: #e8f2eb;
+  background: var(--green-soft);
   color: var(--green);
-  font-weight: 700;
 }
 
 dialog {
@@ -319,15 +377,16 @@ dialog {
 }
 
 dialog::backdrop {
-  background: rgba(23, 33, 29, 0.35);
+  background: rgba(21, 27, 25, 0.42);
 }
 
 .dialog-card {
   display: grid;
   gap: 12px;
   padding: 16px;
-  background: var(--panel);
+  border: 1px solid var(--line);
   border-radius: 8px;
+  background: var(--panel);
 }
 
 .dialog-card header {
@@ -341,6 +400,7 @@ dialog::backdrop {
   height: 36px;
   border: 0;
   background: transparent;
+  color: var(--muted);
   font-size: 24px;
 }
 
@@ -349,6 +409,7 @@ dialog::backdrop {
   gap: 6px;
   color: var(--muted);
   font-size: 14px;
+  font-weight: 620;
 }
 
 .dialog-card input,
@@ -358,8 +419,14 @@ dialog::backdrop {
   border: 1px solid var(--line);
   border-radius: 8px;
   padding: 10px 12px;
-  background: #fffdf8;
+  background: var(--panel-soft);
   color: var(--ink);
+}
+
+.dialog-card input:focus,
+.dialog-card select:focus {
+  border-color: var(--green);
+  outline: 3px solid rgba(11, 122, 102, 0.14);
 }
 
 .segmented {
@@ -375,7 +442,7 @@ dialog::backdrop {
   min-height: 44px;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: #fffdf8;
+  background: var(--panel-soft);
   color: var(--ink);
 }
 
@@ -392,7 +459,7 @@ dialog::backdrop {
   border-radius: 8px;
   background: var(--ink);
   color: white;
-  font-weight: 700;
+  font-weight: 740;
 }
 
 .wide-button {
@@ -407,7 +474,7 @@ dialog::backdrop {
 }
 
 .danger {
-  background: #fbebe8;
+  background: #f8e7e5;
   color: var(--red);
 }
 
@@ -418,13 +485,7 @@ dialog::backdrop {
 }
 
 @media (min-width: 720px) {
-  body {
-    background:
-      radial-gradient(circle at top left, rgba(30, 138, 90, 0.12), transparent 34%),
-      var(--bg);
-  }
-
   .app-shell {
-    padding-top: 32px;
+    padding-top: 34px;
   }
 }
