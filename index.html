@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#f7f4ed" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="攒钱账本" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <title>攒钱账本</title>
+    <link rel="manifest" href="./manifest.json" />
+    <link rel="icon" href="./assets/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="./assets/icon.svg" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="view active" id="view-dashboard" aria-labelledby="dashboard-title">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">今天也把钱看清楚</p>
+            <h1 id="dashboard-title">攒钱首页</h1>
+          </div>
+          <button class="icon-button" data-open-dialog="goal-dialog" aria-label="设置攒钱目标">⚙</button>
+        </header>
+
+        <article class="goal-panel">
+          <div class="goal-head">
+            <div>
+              <p class="muted">攒钱目标</p>
+              <h2 id="goal-name">应急金</h2>
+            </div>
+            <strong id="goal-percent">0%</strong>
+          </div>
+          <div class="progress-track" aria-label="攒钱进度">
+            <div class="progress-fill" id="goal-progress"></div>
+          </div>
+          <div class="goal-grid">
+            <div>
+              <span>已攒</span>
+              <strong id="goal-current">¥0</strong>
+            </div>
+            <div>
+              <span>还差</span>
+              <strong id="goal-left">¥0</strong>
+            </div>
+            <div>
+              <span>月计划</span>
+              <strong id="goal-plan">¥0</strong>
+            </div>
+          </div>
+          <p class="hint" id="goal-projection">记录本月收入、支出和理财收益后，这里会估算月底进度。</p>
+        </article>
+
+        <section class="metric-grid" aria-label="本月概览">
+          <article class="metric">
+            <span>本月收入</span>
+            <strong id="month-income">¥0</strong>
+          </article>
+          <article class="metric">
+            <span>本月支出</span>
+            <strong id="month-expense">¥0</strong>
+          </article>
+          <article class="metric">
+            <span>本月结余</span>
+            <strong id="month-balance">¥0</strong>
+          </article>
+          <article class="metric">
+            <span>理财收益</span>
+            <strong id="month-profit">¥0</strong>
+          </article>
+        </section>
+
+        <section class="section-block">
+          <div class="section-title">
+            <h2>本月主要花销</h2>
+            <button class="text-button" data-nav="records">查看</button>
+          </div>
+          <div class="category-list" id="category-list"></div>
+        </section>
+      </section>
+
+      <section class="view" id="view-records" aria-labelledby="records-title">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">支付宝、微信都先记这里</p>
+            <h1 id="records-title">账本</h1>
+          </div>
+          <button class="primary-fab" data-open-dialog="record-dialog" aria-label="记一笔">＋</button>
+        </header>
+        <div class="record-list" id="record-list"></div>
+      </section>
+
+      <section class="view" id="view-investments" aria-labelledby="investments-title">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">每天更新一次就够</p>
+            <h1 id="investments-title">理财收益</h1>
+          </div>
+          <button class="primary-fab" data-open-dialog="investment-dialog" aria-label="更新理财">＋</button>
+        </header>
+        <article class="investment-total">
+          <span>当前理财总额</span>
+          <strong id="investment-total">¥0</strong>
+          <small id="investment-profit-line">本月收益 ¥0</small>
+        </article>
+        <div class="record-list" id="investment-list"></div>
+      </section>
+
+      <section class="view" id="view-settings" aria-labelledby="settings-title">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">只存在这台设备的浏览器里</p>
+            <h1 id="settings-title">设置</h1>
+          </div>
+        </header>
+        <section class="section-block">
+          <h2>数据</h2>
+          <button class="wide-button" id="export-data">导出备份</button>
+          <label class="wide-button file-button">
+            导入备份
+            <input id="import-data" type="file" accept="application/json" hidden />
+          </label>
+          <button class="wide-button danger" id="reset-demo">恢复示例数据</button>
+        </section>
+      </section>
+    </main>
+
+    <nav class="tabbar" aria-label="主导航">
+      <button class="active" data-nav="dashboard">攒钱</button>
+      <button data-nav="records">账本</button>
+      <button data-nav="investments">理财</button>
+      <button data-nav="settings">设置</button>
+    </nav>
+
+    <dialog id="goal-dialog">
+      <form method="dialog" class="dialog-card" id="goal-form">
+        <header>
+          <h2>设置攒钱目标</h2>
+          <button value="cancel" aria-label="关闭">×</button>
+        </header>
+        <label>目标名称<input id="goal-input-name" name="name" required /></label>
+        <label>目标金额<input id="goal-input-target" name="target" inputmode="decimal" required /></label>
+        <label>当前已攒<input id="goal-input-current" name="current" inputmode="decimal" required /></label>
+        <label>每月计划<input id="goal-input-plan" name="plan" inputmode="decimal" required /></label>
+        <button class="submit-button" value="default">保存目标</button>
+      </form>
+    </dialog>
+
+    <dialog id="record-dialog">
+      <form method="dialog" class="dialog-card" id="record-form">
+        <header>
+          <h2>记一笔</h2>
+          <button value="cancel" aria-label="关闭">×</button>
+        </header>
+        <div class="segmented">
+          <label><input type="radio" name="type" value="expense" checked />支出</label>
+          <label><input type="radio" name="type" value="income" />收入</label>
+        </div>
+        <label>金额<input name="amount" inputmode="decimal" required /></label>
+        <label>
+          分类
+          <select name="category" required>
+            <option>房租</option>
+            <option>水电燃气</option>
+            <option>餐饮</option>
+            <option>外卖</option>
+            <option>交通</option>
+            <option>日用品</option>
+            <option>购物</option>
+            <option>娱乐</option>
+            <option>医疗</option>
+            <option>工资</option>
+            <option>理财</option>
+            <option>其他</option>
+          </select>
+        </label>
+        <label>
+          渠道
+          <select name="channel" required>
+            <option>支付宝</option>
+            <option>微信</option>
+            <option>银行卡</option>
+            <option>现金</option>
+            <option>其他</option>
+          </select>
+        </label>
+        <label>日期<input name="date" type="date" required /></label>
+        <label>备注<input name="note" placeholder="比如房租、晚饭、地铁" /></label>
+        <button class="submit-button" value="default">保存</button>
+      </form>
+    </dialog>
+
+    <dialog id="investment-dialog">
+      <form method="dialog" class="dialog-card" id="investment-form">
+        <header>
+          <h2>更新理财</h2>
+          <button value="cancel" aria-label="关闭">×</button>
+        </header>
+        <label>日期<input name="date" type="date" required /></label>
+        <label>当前理财总额<input name="total" inputmode="decimal" required /></label>
+        <label>今日收益<input name="profit" inputmode="decimal" required /></label>
+        <label>备注<input name="note" placeholder="比如余额宝、基金、总览" /></label>
+        <button class="submit-button" value="default">保存</button>
+      </form>
+    </dialog>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
