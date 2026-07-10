@@ -8,10 +8,10 @@
     <meta name="apple-mobile-web-app-title" content="小满" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <title>小满 · 个人财务</title>
-    <link rel="manifest" href="./manifest.json?v=5" />
+    <link rel="manifest" href="./manifest.json?v=6" />
     <link rel="icon" href="./assets/icon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="./assets/icon.svg" />
-    <link rel="stylesheet" href="./theme.css?v=5" />
+    <link rel="stylesheet" href="./theme.css?v=6" />
   </head>
   <body>
     <main class="app-shell">
@@ -101,21 +101,32 @@
       <section class="view" id="view-investments" aria-labelledby="investments-title">
         <header class="topbar">
           <div><p class="date-line">让资产慢慢长大</p><h1 id="investments-title">理财</h1></div>
-          <button class="primary-icon" data-open-dialog="investment-dialog" aria-label="更新理财"><i data-lucide="plus"></i></button>
+          <div class="header-actions">
+            <button class="icon-button" data-open-dialog="account-dialog" aria-label="新建资产" title="新建资产"><i data-lucide="wallet-cards"></i></button>
+            <button class="primary-icon" data-open-investment aria-label="记录今日盈亏" title="记录今日盈亏"><i data-lucide="plus"></i></button>
+          </div>
         </header>
         <article class="investment-hero">
           <span>当前理财资产</span>
           <strong class="money-value" id="investment-total">¥0</strong>
           <div class="investment-stats">
-            <div><span>本月收益</span><strong class="money-value" id="investment-month-profit">+¥0</strong></div>
-            <div><span>累计收益</span><strong class="money-value" id="investment-all-profit">+¥0</strong></div>
+            <div><span>今日盈亏</span><strong class="money-value" id="investment-today-profit">¥0</strong></div>
+            <div><span>本月盈亏</span><strong class="money-value" id="investment-month-profit">¥0</strong></div>
+            <div><span>累计盈亏</span><strong class="money-value" id="investment-all-profit">¥0</strong></div>
           </div>
         </article>
         <section class="trend-panel">
-          <div class="section-title"><div><p class="section-kicker">近况</p><h2>7 次收益走势</h2></div></div>
-          <div class="sparkline" id="profit-chart" aria-label="近期收益走势"></div>
+          <div class="section-title"><div><p class="section-kicker">近 30 天</p><h2>累计盈亏走势</h2></div><strong class="trend-total money-value" id="trend-total">¥0</strong></div>
+          <div class="line-chart" id="profit-chart" aria-label="近30天累计盈亏走势"></div>
         </section>
-        <div class="record-list" id="investment-list"></div>
+        <section class="portfolio-section">
+          <div class="section-title"><div><p class="section-kicker">分类管理</p><h2>我的资产</h2></div><button class="text-button" data-open-dialog="account-dialog">新建</button></div>
+          <div class="account-list" id="investment-account-list"></div>
+        </section>
+        <section class="investment-history">
+          <div class="section-title"><div><p class="section-kicker">每日记录</p><h2>盈亏明细</h2></div></div>
+          <div class="record-list" id="investment-list"></div>
+        </section>
       </section>
 
       <section class="view" id="view-settings" aria-labelledby="settings-title">
@@ -128,7 +139,7 @@
         <section class="settings-group">
           <h2>关于</h2>
           <div class="setting-row static"><span><i data-lucide="shield-check"></i>数据仅保存在本机</span><small>不会上传</small></div>
-          <div class="setting-row static"><span><i data-lucide="smartphone"></i>小满版本</span><small>2.0</small></div>
+          <div class="setting-row static"><span><i data-lucide="smartphone"></i>小满版本</span><small>2.1</small></div>
         </section>
         <button class="reset-button" id="reset-demo">恢复示例数据</button>
       </section>
@@ -158,7 +169,7 @@
         <div class="segmented"><label><input type="radio" name="type" value="expense" checked /><span>支出</span></label><label><input type="radio" name="type" value="income" /><span>收入</span></label></div>
         <label class="amount-field">金额<span><b>¥</b><input name="amount" inputmode="decimal" placeholder="0.00" required /></span></label>
         <div class="form-grid">
-          <label>分类<select name="category" required><option>餐饮</option><option>房租</option><option>水电燃气</option><option>交通</option><option>日用品</option><option>购物</option><option>娱乐</option><option>医疗</option><option>工资</option><option>理财</option><option>其他</option></select></label>
+          <label>分类<select name="category" required><option>食</option><option>衣</option><option>住</option><option>行</option><option>网购</option><option>通讯</option><option>日用</option><option>娱乐</option><option>医疗</option><option>人情</option><option>工资</option><option>理财</option><option>其他</option></select></label>
           <label>支付方式<select name="channel" required><option>支付宝</option><option>微信</option><option>银行卡</option><option>现金</option><option>其他</option></select></label>
         </div>
         <label>日期<input name="date" type="date" required /></label>
@@ -168,27 +179,49 @@
     </dialog>
 
     <dialog id="screenshot-dialog">
-      <form class="dialog-card" id="screenshot-form">
-        <header><div><p class="section-kicker">辅助录入</p><h2>从支付截图记账</h2></div><button type="button" class="dialog-close" aria-label="关闭"><i data-lucide="x"></i></button></header>
-        <label class="upload-zone" id="screenshot-zone"><input id="screenshot-input" type="file" accept="image/*" hidden /><i data-lucide="image-plus"></i><strong>选择支付宝或微信截图</strong><span>选好后可对照图片快速填写</span></label>
+      <section class="dialog-card screenshot-card">
+        <header><div><p class="section-kicker">本机识别</p><h2>从支付截图记账</h2></div><button type="button" class="dialog-close" aria-label="关闭"><i data-lucide="x"></i></button></header>
+        <label class="upload-zone" id="screenshot-zone"><input id="screenshot-input" type="file" accept="image/png,image/jpeg,image/webp" hidden /><i data-lucide="scan-text"></i><strong>选择支付宝或微信账单截图</strong><span>图片只在这台设备上识别</span></label>
+        <div class="ocr-working" id="ocr-working" hidden>
+          <div class="ocr-progress"><span id="ocr-progress-bar"></span></div>
+          <strong id="ocr-status">正在准备识别</strong>
+          <small id="ocr-progress-text">0%</small>
+        </div>
         <img id="screenshot-preview" class="screenshot-preview" alt="支付截图预览" hidden />
-        <button class="submit-button" type="submit" disabled id="screenshot-continue">对照截图记一笔</button>
+        <div class="ocr-review" id="ocr-review" hidden>
+          <div class="ocr-summary"><strong id="ocr-summary-text">识别到 0 笔</strong><label>支付渠道<select id="ocr-channel"><option>支付宝</option><option>微信</option><option>银行卡</option><option>其他</option></select></label></div>
+          <div class="ocr-results" id="ocr-results"></div>
+          <div class="dialog-actions"><button class="secondary-button" type="button" id="ocr-reset">换张截图</button><button class="submit-button" type="button" id="ocr-import">导入已选账目</button></div>
+        </div>
+        <div class="ocr-error" id="ocr-error" hidden><i data-lucide="circle-alert"></i><p id="ocr-error-text"></p><button class="secondary-button" type="button" id="ocr-retry">重新识别</button></div>
+      </section>
+    </dialog>
+
+    <dialog id="account-dialog">
+      <form class="dialog-card" id="account-form">
+        <header><div><p class="section-kicker">资产分类</p><h2>新建理财资产</h2></div><button type="button" class="dialog-close" aria-label="关闭"><i data-lucide="x"></i></button></header>
+        <label>资产名称<input name="name" placeholder="例如：美股、比特币、全部基金" required /></label>
+        <label>资产类型<select name="type"><option>股票</option><option>基金</option><option>数字货币</option><option>存款理财</option><option>其他</option></select></label>
+        <label class="amount-field">当前总金额<span><b>¥</b><input name="currentValue" inputmode="decimal" placeholder="选填" /></span></label>
+        <button class="submit-button" type="submit">创建资产</button>
       </form>
     </dialog>
 
     <dialog id="investment-dialog">
       <form class="dialog-card" id="investment-form">
-        <header><div><p class="section-kicker">每日更新</p><h2>记录理财收益</h2></div><button type="button" class="dialog-close" aria-label="关闭"><i data-lucide="x"></i></button></header>
+        <header><div><p class="section-kicker">每日更新</p><h2>记录今日盈亏</h2></div><button type="button" class="dialog-close" aria-label="关闭"><i data-lucide="x"></i></button></header>
+        <label>资产<select name="accountId" id="investment-account-select" required></select></label>
         <label>日期<input name="date" type="date" required /></label>
-        <label class="amount-field">当前理财总额<span><b>¥</b><input name="total" inputmode="decimal" placeholder="0.00" required /></span></label>
-        <label>今日收益<input name="profit" inputmode="decimal" placeholder="亏损可填负数" required /></label>
-        <label>备注<input name="note" placeholder="例如：余额宝、基金合计" /></label>
-        <button class="submit-button" type="submit">保存更新</button>
+        <div class="segmented profit-segment"><label><input type="radio" name="direction" value="profit" checked /><span>盈利</span></label><label><input type="radio" name="direction" value="loss" /><span>亏损</span></label></div>
+        <label class="amount-field">今日涨跌金额<span><b>¥</b><input name="amount" inputmode="decimal" placeholder="0.00" required /></span></label>
+        <label class="amount-field">更新当前总金额<span><b>¥</b><input name="currentValue" inputmode="decimal" placeholder="选填" /></span></label>
+        <label>备注<input name="note" placeholder="例如：英伟达上涨、基金整体下跌" /></label>
+        <button class="submit-button" type="submit">保存今日盈亏</button>
       </form>
     </dialog>
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
     <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
-    <script src="./app.js?v=5"></script>
+    <script src="./app.js?v=6"></script>
   </body>
 </html>
