@@ -1,11 +1,11 @@
 {
-  "name": "攒钱账本",
-  "short_name": "攒钱账本",
-  "description": "个人攒钱、记账和理财收益追踪网页 App。",
-  "start_url": "./index.html",
+  "name": "小满 · 个人财务",
+  "short_name": "小满",
+  "description": "为刚开始独立生活设计的个人记账、攒钱和理财工具。",
+  "start_url": "./index.html?v=5",
   "display": "standalone",
-  "background_color": "#f5f7f8",
-  "theme_color": "#f5f7f8",
+  "background_color": "#f4f5f2",
+  "theme_color": "#f4f5f2",
   "icons": [
     {
       "src": "./assets/icon.svg",
