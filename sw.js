@@ -1,9 +1,9 @@
-const CACHE_NAME = "savings-ledger-web-v4";
+const CACHE_NAME = "xiaoman-v5";
 const ASSETS = [
   "./",
   "./index.html",
-  "./theme.css?v=2",
-  "./app.js?v=2",
+  "./theme.css?v=5",
+  "./app.js?v=5",
   "./manifest.json",
   "./assets/icon.svg"
 ];
