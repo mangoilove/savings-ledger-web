@@ -1,9 +1,9 @@
-const CACHE_NAME = "xiaoman-v5";
+const CACHE_NAME = "xiaoman-v6";
 const ASSETS = [
   "./",
   "./index.html",
-  "./theme.css?v=5",
-  "./app.js?v=5",
+  "./theme.css?v=6",
+  "./app.js?v=6",
   "./manifest.json",
   "./assets/icon.svg"
 ];
